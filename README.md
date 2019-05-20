@@ -4,59 +4,54 @@
 
 ### Table creation code
 ```
-CREATE TABLE Departments (
-   Code INTEGER PRIMARY KEY NOT NULL,
-   Name TEXT NOT NULL ,
-   Budget REAL NOT NULL 
+CREATE TABLE Pieces (
+ Code INTEGER PRIMARY KEY NOT NULL,
+ Name TEXT NOT NULL
+ );
+CREATE TABLE Providers (
+ Code VARCHAR(40) 
+ PRIMARY KEY NOT NULL,  
+ Name TEXT NOT NULL 
+ );
+CREATE TABLE Provides (
+ Piece INTEGER, 
+ FOREIGN KEY (Piece) REFERENCES Pieces(Code),
+ Provider VARCHAR(40), 
+ FOREIGN KEY (Provider) REFERENCES Providers(Code),  
+ Price INTEGER NOT NULL,
+ PRIMARY KEY(Piece, Provider) 
  );
  
- CREATE TABLE Employees (
-   SSN INTEGER PRIMARY KEY NOT NULL,
-   Name TEXT NOT NULL ,
-   LastName TEXT NOT NULL ,
-   Department INTEGER NOT NULL , 
-    CONSTRAINT fk_Departments_Code FOREIGN KEY(Department) REFERENCES Departments(Code)
- );
+INSERT INTO Providers(Code, Name) VALUES('HAL','Clarke Enterprises');
+INSERT INTO Providers(Code, Name) VALUES('RBT','Susan Calvin Corp.');
+INSERT INTO Providers(Code, Name) VALUES('TNBC','Skellington Supplies');
+
+INSERT INTO Pieces(Code, Name) VALUES(1,'Sprocket');
+INSERT INTO Pieces(Code, Name) VALUES(2,'Screw');
+INSERT INTO Pieces(Code, Name) VALUES(3,'Nut');
+INSERT INTO Pieces(Code, Name) VALUES(4,'Bolt');
+
+INSERT INTO Provides(Piece, Provider, Price) VALUES(1,'HAL',10);
+INSERT INTO Provides(Piece, Provider, Price) VALUES(1,'RBT',15);
+INSERT INTO Provides(Piece, Provider, Price) VALUES(2,'HAL',20);
+INSERT INTO Provides(Piece, Provider, Price) VALUES(2,'RBT',15);
+INSERT INTO Provides(Piece, Provider, Price) VALUES(2,'TNBC',14);
+INSERT INTO Provides(Piece, Provider, Price) VALUES(3,'RBT',50);
+INSERT INTO Provides(Piece, Provider, Price) VALUES(3,'TNBC',45);
+INSERT INTO Provides(Piece, Provider, Price) VALUES(4,'HAL',5);
+INSERT INTO Provides(Piece, Provider, Price) VALUES(4,'RBT',7);
 ```
 
-### Sample dataset
-```
-INSERT INTO Departments(Code,Name,Budget) VALUES(14,'IT',65000);
-INSERT INTO Departments(Code,Name,Budget) VALUES(37,'Accounting',15000);
-INSERT INTO Departments(Code,Name,Budget) VALUES(59,'Human Resources',240000);
-INSERT INTO Departments(Code,Name,Budget) VALUES(77,'Research',55000);
-
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('123234877','Michael','Rogers',14);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('152934485','Anand','Manikutty',14);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('222364883','Carol','Smith',37);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('326587417','Joe','Stevens',37);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('332154719','Mary-Anne','Foster',14);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('332569843','George','O''Donnell',77);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('546523478','John','Doe',59);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('631231482','David','Smith',77);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('654873219','Zacary','Efron',59);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('745685214','Eric','Goldsmith',59);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('845657245','Elizabeth','Doe',14);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('845657246','Kumar','Swamy',14);
-```
 ### Exercises
 
-1. Select the last name of all employees, without duplicates.
-
-2. Select all the data of employees whose last name is "Smith".
-
-3. Select all the data of employees that work in department 37 or department 77.
-
-4. Select the sum of all the departments' budgets.
-
-5. Select all the data of employees, including each employee's department's data.
-
-6. Select the name and last name of employees working for departments with a budget greater than $60,000.
-
-7. Select the name and last name of employees working for departments with second lowest budget.
-
-8. Reduce the budget of all departments by 10%.
-
-9. Reassign all employees from the Research department (code 77) to the IT department (code 14).
-
-10. Delete from the table all employees who work in departments with a budget greater than or equal to $60,000.
+1) Select the name of all the pieces.
+2) Select all the providers' data. 
+3) Obtain the average price of each piece (show only the piece code and the average price).
+4) Obtain the names of all providers who supply piece 1.
+5) Select the name of pieces provided by provider with code "HAL".
+6) For each piece, find the most expensive offering of that piece and include the piece name, provider name, and price. Note: there could be two providers who supply the same piece at the most expensive price.
+7) Add an entry to the database to indicate that "Skellington Supplies" (code "TNBC") will provide sprockets (code "1") for 7 cents each.
+8) Increase all prices by one cent.
+9) Update the database to reflect that "Susan Calvin Corp." (code "RBT") will not supply bolts (code 4).
+10) Update the database to reflect that "Susan Calvin Corp." (code "RBT") will not supply any pieces 
+    -- (the provider should still remain in the database).
